@@ -1,5 +1,9 @@
 describe('template spec', () => {
   it('passes', () => {
-    cy.visit('https://example.cypress.io')
+    // Open
+    cy.visit('http://localhost:4200/books');
+
+// Query
+    cy.get('[data-testid="app-title"]').contains('BOOK');
   })
 })
