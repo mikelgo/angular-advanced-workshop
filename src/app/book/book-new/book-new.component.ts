@@ -4,6 +4,8 @@ import { bookNa } from '../models';
 import { BookApiService } from "../book-api.service";
 import { take } from "rxjs";
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { createBookStart } from "../store/book-collection.actions";
 
 @Component({
     selector: 'ws-book-new',
@@ -13,7 +15,7 @@ import { Router } from "@angular/router";
 export class BookNewComponent {
     form: FormGroup;
 
-    constructor(private fb: FormBuilder, private bookApi: BookApiService, private router: Router) {
+    constructor(private fb: FormBuilder, private bookApi: BookApiService, private router: Router, private store: Store,) {
         this.form = this.buildForm();
     }
 
@@ -21,6 +23,8 @@ export class BookNewComponent {
         const book = { ...bookNa(), ...this.form.value };
 
         this.bookApi.create(book).pipe(take(1)).subscribe(() => this.router.navigate([ '/books' ]));
+
+        this.store.dispatch(createBookStart({ book }));
     }
 
     private buildForm(): FormGroup {
